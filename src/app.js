@@ -69,7 +69,7 @@ app.post('/deleteItem', async (req, res) => {
     } catch (error) {
 
         
-        return res.status(300).json({ message: 'Ocurrió un error al agregar el stock', status: 300 });
+        return res.status(300).json({ message: 'Ocurrió un error al eliminar el item', status: 300 });
 
     }
 });
