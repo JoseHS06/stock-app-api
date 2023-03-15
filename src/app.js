@@ -29,7 +29,7 @@ app.post('/addProduct', async (req, res) => {
     try {
 
         const { code, name, stock_minimum } = req.body;
-        const result = await conexion.query('CALL newItem(?, ?, ?)', [code, name, stock_minimum]);
+        const [rows] = await conexion.query('CALL newItem(?, ?, ?)', [code, name, stock_minimum]);
 
         return res.status(200).json({ message: 'Producto agregado correctamente', status: 200});
 
@@ -47,11 +47,12 @@ app.post('/updateStock', async (req, res) => {
         const { action, id, stock } = req.body;
         const [rows] = await conexion.query('CALL itemAction(?, ?, ?)', [action, id, stock]);
 
-        return res.status(200).json({ message: 'Stock actualizado correctamente', status: 200 });
+        return res.status(200).json({ message: rows[0][0].message, status: rows[0][0].code_request });
 
     } catch (error) {
 
-        return res.status(300).json({ message: 'Ocurrió un error al agregar el stock', status: 200 });
+        
+        return res.status(300).json({ message: 'Ocurrió un error al agregar el stock', status: 300 });
 
     }
 });
