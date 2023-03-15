@@ -57,5 +57,23 @@ app.post('/updateStock', async (req, res) => {
     }
 });
 
+app.post('/deleteItem', async (req, res) => {
+
+    try {
+
+        const { id, action } = req.body;
+        const [rows] = await conexion.query('CALL deleteItem(?, ?)', [id, action]);
+
+        return res.status(200).json({ message: rows[0][0].message, status: rows[0][0].code_request });
+
+    } catch (error) {
+
+        
+        return res.status(300).json({ message: 'Ocurrió un error al agregar el stock', status: 300 });
+
+    }
+});
+
+
 
 export default app;
